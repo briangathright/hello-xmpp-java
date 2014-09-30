@@ -9,10 +9,10 @@
 
     <application
         android:icon="@drawable/android:star_big_on"
-        android:label="@string/app_name"
+        android:label="hello-xmpp-scala"
         android:debuggable="true">
 
-        <activity android:label="@string/app_name" android:name=".MainActivity">
+        <activity android:label="hello-xmpp-scala" android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
