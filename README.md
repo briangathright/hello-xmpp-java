@@ -1,4 +1,4 @@
-# TestinGrounds
+# TestingGrounds
 
 This is where the java implementation of Smack currently resides. Right now you can log in as "awallluc@gmail.com" with password "androidwall" and choose your gmail as the chat partner. Currently, it can talk to google talk, but two of this client can't talk to eachother (not sure why). Google Talk partner can also respond back. 
 
