@@ -6,4 +6,4 @@ You will notice when you login that tons of red text and warnings will pop up (t
 
 # hello-xmpp-scala 
 
-Still need to add project folder for the main project
+Project Structure for Scala android development. Still trying to get it to work correctly...
