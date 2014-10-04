@@ -23,7 +23,12 @@ libraryDependencies ++= Seq(
   "org.scalatest" % "scalatest_2.10" % "2.2.1" % "test",
   "com.netflix.rxjava" % "rxjava-core" % "0.20.3",
   "com.netflix.rxjava" % "rxjava-scala" % "0.20.4",
-  "com.netflix.rxjava" % "rxjava-android" % "0.20.4"
+  "com.netflix.rxjava" % "rxjava-android" % "0.20.4",
+  "org.igniterealtime.smack" % "smack-java7" % "4.1.0-alpha1",
+  "org.igniterealtime.smack" % "smack-tcp" % "4.1.0-alpha1",
+  "org.igniterealtime.smack" % "smack-core" % "4.1.0-alpha1",
+  "org.igniterealtime.smack" % "smack-bosh" % "4.1.0-alpha1",
+  "org.igniterealtime.smack" % "smack-android" % "4.1.0-alpha1"
 )
 
 // Make the actually targeted Android jars available to Robolectric for shadowing.
