@@ -6,4 +6,4 @@ You will notice when you login that tons of red text and warnings will pop up (t
 
 # hello-xmpp-scala 
 
-Project Structure for Scala android development. Still trying to get it to work correctly...
+Project Structure for Scala android development. Working on porting functionality from TestingGrounds into Android.

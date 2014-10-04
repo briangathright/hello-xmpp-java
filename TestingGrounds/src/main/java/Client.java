@@ -17,6 +17,7 @@ public class Client implements MessageListener
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String msg;
 
+
         System.out.println("Enter Account Information");
         //I made a gmail account for "awallluc@gmail.com"
         //password is "androidwall" I use my personal gmail account as the partner
