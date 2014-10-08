@@ -43,6 +43,9 @@ exportJars in Test := false
 
 // Supress warnings so that Proguard will do its job.
 proguardOptions in Android ++= Seq(
+  "-keep class org.xmlpull.v1.XmlSerializer",
+  "-keep class org.xmlpull.v1.XmlPullParser",
+  "-dontwarn org.xmlpull.**",
   "-dontwarn rx.internal.util.**",
   "-dontwarn android.test.**",
   "-dontwarn org.jivesoftware.**",
