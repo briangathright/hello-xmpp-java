@@ -44,7 +44,9 @@ exportJars in Test := false
 // Supress warnings so that Proguard will do its job.
 proguardOptions in Android ++= Seq(
   "-dontwarn rx.internal.util.**",
-  "-dontwarn android.test.**"
+  "-dontwarn android.test.**",
+  "-dontwarn org.jivesoftware.**",
+  "-dontwarn org.apache.**"
 )
 
 // Required so Proguard won't remove the actual instrumentation tests.
