@@ -2,12 +2,19 @@ package edu.luc.etl.cs313.scala.hello.xmpp
 package ui
 
 import java.io.{InputStreamReader, BufferedReader}
+import java.util
 
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.{EditText, Button}
 import model.XMPPClient
+import org.jivesoftware.smack.SmackException.ConnectionException
+import org.jivesoftware.smack.android.AndroidSmackInitializer
+import org.jivesoftware.smack.tcp.XMPPTCPConnection
+import org.jivesoftware.smack.util.dns.HostAddress
+import org.jivesoftware.smack.{AbstractXMPPConnection, ConnectionConfiguration}
 
 
 /**
@@ -28,9 +35,7 @@ class MainActivity extends Activity with TypedActivity {
     Log.i(TAG, "onCreate")
     // inject the (implicit) dependency on the view
     setContentView(R.layout.main)
-    val userName: String = "awallluc"
-    val password: String = "androidwall"
-    client.login(userName, password)
+    connect()
   }
 
   override def onStart() {
@@ -38,7 +43,27 @@ class MainActivity extends Activity with TypedActivity {
     Log.i(TAG, "onStart")
   }
 
-  def onSend(): Unit = {
+  def connect() {
+    val t : Thread = new Thread(new Runnable {
+      override def run(): Unit = {
+        val userName: String = "awallluc@gmail.com"
+        val password: String = "androidwall"
+        try {
+          client.login(userName, password)
+        }
+        catch {
+          case ex: ConnectionException => {
+            val hosts : util.List[HostAddress] = ex.getFailedAddresses
+            Log.e("Error", hosts.listIterator().next().getException.toString)
+          }
+        }
+      }
+
+    })
+    t.start()
+  }
+
+  def onSend(view : View) {
      val msg : String = edit.getText.toString
      client.sendMessage(msg,"briangathright@gmail.com")
   }
