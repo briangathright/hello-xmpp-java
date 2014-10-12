@@ -45,6 +45,13 @@ exportJars in Test := false
 proguardOptions in Android ++= Seq(
   "-keep class org.xmlpull.v1.XmlSerializer",
   "-keep class org.xmlpull.v1.XmlPullParser",
+  "-keep class org.jivesoftware.smack.initializer.VmArgInitializer",
+  "-keep class org.jivesoftware.smack.ReconnectionManager",
+  "-keep class * implements org.jivesoftware.smackx.xevent.MessageEventNotificationListener",
+  "-keep class * extends org.jivesoftware.smackx.DefaultMessageEventRequestListener",
+  "-keep class org.jivesoftware.smackx.xevent.MessageEventManager { *; }",
+  "-keep class org.jivesoftware.smackx.xevent.MessageEventNotificationListener { *; }",
+  "-keep class org.jivesoftware.smackx.xevent.DefaultMessageEventRequestListener { *; }",
   "-dontwarn org.xmlpull.**",
   "-dontwarn rx.internal.util.**",
   "-dontwarn android.test.**",
@@ -58,4 +65,11 @@ proguardOptions in Android ++= Seq(
   "-keepclassmembers class * extends junit.framework.TestCase { *; }"
 )
 
-apkbuildExcludes in Android += "LICENSE.txt"
+apkbuildExcludes in Android ++= Seq(
+  "LICENSE.txt",
+  "META-INF/DEPENDENCIES",
+  "META-INF/LICENSE",
+  "META-INF/LICENSE.txt",
+  "META-INF/NOTICE",
+  "META-INF/NOTICE.txt"
+)

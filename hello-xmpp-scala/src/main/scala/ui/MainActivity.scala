@@ -16,11 +16,11 @@ import model.XMPPClient
  * in the Model-View-Adapter pattern. It connects the Android GUI view with the
  * reactive model.
  */
-class MainActivity extends Activity {
+class MainActivity extends Activity with TypedActivity {
 
   private def TAG = "xmpp-android-activity"
-  private val send : Button = findViewById(R.id.button_send).asInstanceOf[Button]
-  private val edit : EditText = findViewById(R.id.editText).asInstanceOf[EditText]
+  private def send = findView(TR.button_send)
+  private def edit = findView(TR.editText)
   private val client: XMPPClient = new XMPPClient
 
   override def onCreate(savedInstanceState: Bundle) {
@@ -39,7 +39,7 @@ class MainActivity extends Activity {
   }
 
   def onSend(): Unit = {
-     val msg : String = edit.getText.asInstanceOf[String]
+     val msg : String = edit.getText.toString
      client.sendMessage(msg,"briangathright@gmail.com")
   }
 }
