@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
+import android.os.Handler;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import org.jivesoftware.smack.*;
 import org.jivesoftware.smack.filter.MessageTypeFilter;
@@ -30,11 +34,13 @@ public class MainActivity extends Activity {
     public Chat chat2 = null;
     private AbstractXMPPConnection connection;
 
+    private ArrayList<String> messages = new ArrayList<String>();
+
     private EditText usernameET;
     private EditText passwordET;
     private EditText recipient;
     private EditText textMessage;
-    private TextView messagesTV;
+    private ListView listview;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,9 +59,15 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
-        messagesTV = (TextView) this.findViewById(R.id.messagesTV);
+        listview = (ListView) this.findViewById(R.id.listMessages);
+        setListAdapter();
         textMessage = (EditText) this.findViewById(R.id.chatBoxET);
         recipient = (EditText) this.findViewById(R.id.recipientET);
+    }
+
+    private void setListAdapter() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.listitem, messages);
+        listview.setAdapter(adapter);
     }
 
     @Override
@@ -101,20 +113,26 @@ public class MainActivity extends Activity {
                 chatmanager.addChatListener(new ChatManagerListener() {
                     @Override
                     public void chatCreated(Chat chat, boolean createdLocally) {
-                        chat2 = chat;
-                        chat.addMessageListener(new ChatMessageListener() {
-                            @Override
-                            public void processMessage(Chat chat, final Message message) {
-                                if (message.getBody() != null) {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            messagesTV.setText(message.getBody());
-                                        }
-                                    });
+                        if (chat2 == null) {
+                            chat2 = chat;
+                        }
+                        if (!createdLocally) {
+                            final String from = chat2.getParticipant();
+                            chat2.addMessageListener(new ChatMessageListener() {
+                                @Override
+                                public void processMessage(Chat chat, final Message message) {
+                                    if (message.getBody() != null) {
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                messages.add(from + ": " + message.getBody());
+                                                setListAdapter();
+                                            }
+                                        });
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
                     }
                 });
             }
@@ -134,10 +152,12 @@ public class MainActivity extends Activity {
                 @Override
                 public void processMessage(Chat chat, final Message message) {
                     if (message.getBody() != null) {
+                        final String from = chat.getParticipant();
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                messagesTV.setText(message.getBody());
+                                messages.add(from + ": " + message.getBody());
+                                setListAdapter();
                             }
                         });
                     }
@@ -150,6 +170,8 @@ public class MainActivity extends Activity {
         if (connection != null) {
             try {
                 connection.sendPacket(msg);
+                messages.add("You: " + text);
+                setListAdapter();
             } catch (SmackException.NotConnectedException e) {
                 e.printStackTrace();
             }

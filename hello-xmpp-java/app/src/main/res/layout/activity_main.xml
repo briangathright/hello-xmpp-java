@@ -33,16 +33,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-        <TextView
-                android:id="@+id/messagesTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="70dp"
-                android:text="Messages"
-                android:textStyle="bold" />
-
     </LinearLayout>
 
+    <ListView
+            android:id="@+id/listMessages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:scrollbars="horizontal" />
 
     <LinearLayout
             android:id="@+id/linearLayout2"
