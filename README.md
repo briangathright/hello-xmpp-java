@@ -14,5 +14,5 @@ Status: Issues with Proguard not allowing dynamic assignment of resources, can't
 
 Java implementation of Smack 4.1 on Android
 
-Status: Can send and receive messages from PC, working on making it device to device as well, and need to make message display more than just latest received message.
+Status: Can receive and send messages to other emulators and pc's. Will fluff out message printing so it shows more than just last message. 
 
