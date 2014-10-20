@@ -26,6 +26,8 @@ public class MainActivity extends Activity {
     public static String username;
     public static String password;
 
+    private ChatManager chatmanager;
+    public Chat chat2 = null;
     private AbstractXMPPConnection connection;
 
     private EditText usernameET;
@@ -95,6 +97,26 @@ public class MainActivity extends Activity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                chatmanager = ChatManager.getInstanceFor(connection);
+                chatmanager.addChatListener(new ChatManagerListener() {
+                    @Override
+                    public void chatCreated(Chat chat, boolean createdLocally) {
+                        chat2 = chat;
+                        chat.addMessageListener(new ChatMessageListener() {
+                            @Override
+                            public void processMessage(Chat chat, final Message message) {
+                                if (message.getBody() != null) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            messagesTV.setText(message.getBody());
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
             }
         });
         t.start();
@@ -102,25 +124,26 @@ public class MainActivity extends Activity {
 
 
     public void onSend(View view) {
-        ChatManager chatmanager = ChatManager.getInstanceFor(connection);
-
-        Chat newChat = chatmanager.createChat(recipient.getText().toString(), new MessageListener() {
-            @Override
-            public void processMessage(Chat chat, final Message message) {
-                if (message.getBody() != null) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            messagesTV.setText(message.getBody());
-                        }
-                    });
-                }
-            }
-        });
 
         String to = recipient.getText().toString();
         String text = textMessage.getText().toString();
         Log.i("hello-xmpp-java", "Sending text " + text + " to " + to);
+
+        if(chat2 == null) {
+            chat2 = chatmanager.createChat(to, new ChatMessageListener() {
+                @Override
+                public void processMessage(Chat chat, final Message message) {
+                    if (message.getBody() != null) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                messagesTV.setText(message.getBody());
+                            }
+                        });
+                    }
+                }
+            });
+        }
 
         Message msg = new Message(to, Message.Type.chat);
         msg.setBody(text);
