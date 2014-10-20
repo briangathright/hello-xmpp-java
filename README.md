@@ -6,4 +6,13 @@ You will notice when you login that tons of red text and warnings will pop up (t
 
 # hello-xmpp-scala 
 
-Project Structure for Scala android development. Working on porting functionality from TestingGrounds into Android.
+Scala implementation of Smack 4.1 on Android
+
+Status: Issues with Proguard not allowing dynamic assignment of resources, can't proceed.
+
+# hello-xmpp-java
+
+Java implementation of Smack 4.1 on Android
+
+Status: Can send and receive messages from PC, working on making it device to device as well, and need to make message display more than just latest received message.
+

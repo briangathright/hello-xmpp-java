@@ -16,7 +16,7 @@ class XMPPClient extends MessageListener {
 
     def login(userName: String, password: String) {
       //connection = new XMPPTCPConnection(config)
-      config.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER)
+      //config.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER)
 
       connection.connect()
       connection.login(userName, password)
