@@ -12,6 +12,10 @@ import org.jivesoftware.smack._
 class XMPPClient extends MessageListener {
 
     var config: ConnectionConfiguration = new ConnectionConfiguration("talk.google.com", 5222, "gmail.com")
+
+    config.setKeystoreType("AndroidCAStore")
+    config.setKeystorePath(null)
+
     var connection: AbstractXMPPConnection = new XMPPTCPConnection(config)
 
     def login(userName: String, password: String) {
