@@ -6,15 +6,10 @@ import android.os.Bundle;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import android.os.Handler;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import org.jivesoftware.smack.*;
-import org.jivesoftware.smack.filter.MessageTypeFilter;
-import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 
 import android.util.Log;
@@ -79,7 +74,6 @@ public class MainActivity extends Activity {
 
         }
     }
-
 
     public void connect() {
         Thread t = new Thread(new Runnable() {
