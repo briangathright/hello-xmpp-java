@@ -18,52 +18,51 @@ import org.jivesoftware.smack._
  */
 class MainActivity extends Activity with TypedActivity {
 
-  final val HOST: String = "talk.google.com"
-  final val PORT: Int = 5222
-  final val SERVICE: String = "gmail.com"
+  val HOST = "talk.google.com"
+  val PORT = 5222
+  val SERVICE = "gmail.com"
 
-  val username: String = "awallluc@gmail.com"
-  val password: String = "androidwall"
-  private var chatmanager: ChatManager = null
-  var chat2: Chat = null
-  var connection: AbstractXMPPConnection = null
+  val username = "awallluc@gmail.com"
+  val password = "androidwall"
 
-  private def TAG = "xmpp-android-activity"
+  private var chatmanager: ChatManager = _
+  var chat2: Chat = _
+  var connection: AbstractXMPPConnection = _
+
+  private val TAG = "xmpp-android-activity" // FIXME please use this in all log messages
+
   private def send = findView(TR.button_send)
   private def edit = findView(TR.editText)
 
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
-
     Log.i(TAG, "onCreate")
     // inject the (implicit) dependency on the view
     setContentView(R.layout.main)
-
-    val connConfig: ConnectionConfiguration = new ConnectionConfiguration(HOST, PORT, SERVICE)
-    connection = new XMPPTCPConnection(connConfig)
-
-    connect()
   }
-
 
   override def onStart() {
     super.onStart()
     Log.i(TAG, "onStart")
+    connect()
   }
 
   def connect() {
     val t: Thread = new Thread(new Runnable {
       override def run(): Unit = {
-        val connConfig: ConnectionConfiguration = new ConnectionConfiguration(HOST, PORT, SERVICE)
+        Log.i(TAG, "Getting config...")
+        val connConfig = new ConnectionConfiguration(HOST, PORT, SERVICE)
+        Log.i(TAG, "Getting conn...")
         connection = new XMPPTCPConnection(connConfig)
         try {
-          Log.i("Connecting...", "Connectings...")
+          Log.i(TAG, "Connectings...")
           connection.connect()
+          Log.i(TAG, "Connection succeded")
         }
         catch {
           case ex: XMPPException => {
-            Log.e("Error", "Failed to connect to " + connection.getHost)
-            Log.e("Error", ex.toString)
+            Log.e(TAG, "Failed to connect to " + connection.getHost)
+            Log.e(TAG, ex.toString)
           }
           case e: SmackException => {
             e.printStackTrace()
@@ -71,11 +70,12 @@ class MainActivity extends Activity with TypedActivity {
         }
         try {
           connection.login(username, password)
+          Log.i(TAG, "logged in successfully")
         }
         catch {
           case ex: XMPPException => {
-            Log.e("Error", "Failed to log in as " + username)
-            Log.e("Error", ex.toString)
+            Log.e(TAG, "Failed to log in as " + username)
+            Log.e(TAG, ex.toString)
           }
           case e: SmackException.NotConnectedException => {
             e.printStackTrace()
@@ -85,6 +85,7 @@ class MainActivity extends Activity with TypedActivity {
           }
         }
         chatmanager = ChatManager.getInstanceFor(connection)
+        Log.i(TAG, "got chat manager")
         chatmanager.addChatListener(new ChatManagerListener {
           def chatCreated(chat: Chat, createdLocally: Boolean) {
             if (chat2 == null) {
@@ -107,13 +108,14 @@ class MainActivity extends Activity with TypedActivity {
             }
           }
         })
+        Log.i(TAG, "attached chat listener")
       }
     })
     t.start()
   }
 
   def onSend(view: View) {
-    val to: String = "briangathright@gmail.com"
+    val to = "briangathright@gmail.com"
     //val text: String = textMessage.getText.toString
     //Log.i("hello-xmpp-java", "Sending text " + text + " to " + to)
     if (chat2 == null) {

@@ -21,7 +21,7 @@ libraryDependencies ++= Seq(
   "junit" % "junit" % "4.11" % "test",
   "org.scalamock" %% "scalamock-scalatest-support" % "3.1.RC1" % "test",
   "org.scalatest" % "scalatest_2.10" % "2.2.1" % "test",
-  "com.netflix.rxjava" % "rxjava-core" % "0.20.3",
+  "com.netflix.rxjava" % "rxjava-core" % "0.20.4",
   "com.netflix.rxjava" % "rxjava-scala" % "0.20.4",
   "com.netflix.rxjava" % "rxjava-android" % "0.20.4",
 //  "org.igniterealtime.smack" % "smack-java7" % "4.1.0-alpha1",
@@ -44,23 +44,12 @@ exportJars in Test := false
 
 // Supress warnings so that Proguard will do its job.
 proguardOptions in Android ++= Seq(
-  "-keep class org.xmlpull.v1.XmlSerializer",
-  "-keep class org.xmlpull.v1.XmlPullParser",
-  "-keep class org.jivesoftware.smack.sasl.** { *; }",
-  "-keep class org.jivesoftware.smack.initializer.VmArgInitializer",
-  "-keep class org.jivesoftware.smack.ReconnectionManager",
-  "-keep class * implements org.jivesoftware.smackx.xevent.MessageEventNotificationListener",
-  "-keep class * extends org.jivesoftware.smackx.DefaultMessageEventRequestListener",
-  "-keep class org.jivesoftware.smackx.xevent.MessageEventManager { *; }",
-  "-keep class org.jivesoftware.smackx.xevent.MessageEventNotificationListener { *; }",
-  "-keep class org.jivesoftware.smackx.xevent.DefaultMessageEventRequestListener { *; }",
-  "-keep class * extends org.jivesoftware.smack.sasl.SASLMechanism { *; }",
-  "-keep class javax.security.sasl.Sasl { *; }",
+  "-keep class org.xmlpull.v1.*",
+  "-keep class javax.net.ssl.**",
+  "-keep class org.jivesoftware.**",
   "-dontwarn org.xmlpull.**",
   "-dontwarn rx.internal.util.**",
-  "-dontwarn android.test.**",
-  "-dontwarn org.jivesoftware.**",
-  "-dontwarn org.apache.**"
+  "-dontwarn android.test.**"
 )
 
 // Required so Proguard won't remove the actual instrumentation tests.
