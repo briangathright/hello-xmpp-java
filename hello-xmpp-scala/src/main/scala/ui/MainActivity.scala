@@ -1,6 +1,9 @@
 package edu.luc.etl.cs313.scala.hello.xmpp
 package ui
 
+import java.util
+
+import _root_.android.widget.ArrayAdapter
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +12,8 @@ import org.jivesoftware.smack.packet.Message
 import org.jivesoftware.smack.tcp.XMPPTCPConnection
 import org.jivesoftware.smack.{AbstractXMPPConnection, ConnectionConfiguration}
 import org.jivesoftware.smack._
+
+import scala.collection.mutable.ArrayBuffer
 
 /**
  * The main Android activity, which provides the required lifecycle methods.
@@ -22,29 +27,62 @@ class MainActivity extends Activity with TypedActivity {
   val PORT = 5222
   val SERVICE = "gmail.com"
 
-  val username = "awallluc@gmail.com"
-  val password = "androidwall"
+  var username : String = _
+  var password : String = _
 
   private var chatmanager: ChatManager = _
   var chat2: Chat = _
   var connection: AbstractXMPPConnection = _
 
+  private val messages: util.ArrayList[String] = new util.ArrayList[String]
+
   private val TAG = "xmpp-android-activity" // FIXME please use this in all log messages
 
-  private def send = findView(TR.button_send)
-  private def edit = findView(TR.editText)
+
+
+  private def usernameET = findView(TR.usernameET)
+  private def passwordET = findView(TR.passwordET)
+  private def recipient = findView(TR.recipientET)
+  private def send = findView(TR.sendButton)
+  private def textMessage = findView(TR.chatBoxET)
+  private def listview = findView(TR.listMessages)
+
 
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
     Log.i(TAG, "onCreate")
     // inject the (implicit) dependency on the view
-    setContentView(R.layout.main)
+    setContentView(R.layout.login)
   }
 
   override def onStart() {
     super.onStart()
     Log.i(TAG, "onStart")
+  }
+
+  def onLogin(view: View) {
+    username = usernameET.getText.toString
+    password = passwordET.getText.toString
     connect()
+    setContentView(R.layout.main)
+    setListAdapter()
+  }
+
+  private def setListAdapter() {
+    val adapter: ArrayAdapter[String] = new ArrayAdapter[String](this, R.layout.listitem, messages)
+    listview.setAdapter(adapter)
+  }
+
+  override def onDestroy() {
+    super.onDestroy()
+    try {
+      connection.disconnect()
+    }
+    catch {
+      case e: SmackException => {
+        e.printStackTrace()
+      }
+    }
   }
 
   def connect() {
@@ -98,8 +136,8 @@ class MainActivity extends Activity with TypedActivity {
                   if (message.getBody != null) {
                     runOnUiThread(new Runnable {
                       def run() {
-                        //messages.add(from + ": " + message.getBody)
-                        //setListAdapter
+                        messages.add(from + ": " + message.getBody)
+                        setListAdapter()
                       }
                     })
                   }
@@ -115,9 +153,9 @@ class MainActivity extends Activity with TypedActivity {
   }
 
   def onSend(view: View) {
-    val to = "briangathright@gmail.com"
-    //val text: String = textMessage.getText.toString
-    //Log.i("hello-xmpp-java", "Sending text " + text + " to " + to)
+    val to: String = recipient.getText.toString
+    val text: String = textMessage.getText.toString
+    Log.i(TAG, "Sending text " + text + " to " + to)
     if (chat2 == null) {
       chat2 = chatmanager.createChat(to, new ChatMessageListener {
         override def processMessage(chat: Chat, message: Message) {
@@ -125,8 +163,8 @@ class MainActivity extends Activity with TypedActivity {
             val from: String = chat.getParticipant
             runOnUiThread(new Runnable {
               override def run(): Unit = {
-                //messages.add(from + ": " + message.getBody)
-                //setListAdapter
+                messages.add(from + ": " + message.getBody)
+                setListAdapter()
               }
             })
           }
@@ -134,12 +172,12 @@ class MainActivity extends Activity with TypedActivity {
       })
     }
     val msg: Message = new Message(to, Message.Type.chat)
-    msg.setBody("hello")
+    msg.setBody(text)
     if (connection != null) {
       try {
         connection.sendPacket(msg)
-        //messages.add("You: " + text)
-        //setListAdapter
+        messages.add("You: " + text)
+        setListAdapter()
       }
       catch {
         case e: SmackException.NotConnectedException => {
@@ -147,7 +185,7 @@ class MainActivity extends Activity with TypedActivity {
         }
       }
     }
-    //textMessage.setText("")
+    textMessage.setText("")
   }
 }
 

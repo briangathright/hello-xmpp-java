@@ -14,14 +14,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minWidth="70dp"
-                android:text="Recipient"
+                android:text="Username"
                 android:textStyle="bold" />
 
         <EditText
-                android:id="@+id/recipientET"
+                android:id="@+id/usernameET"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Enter Recipient's Google Account"
+                android:hint="Enter Username"
                 android:minWidth="250dp"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
@@ -29,18 +29,30 @@
     </LinearLayout>
 
     <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal" >
 
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="70dp"
+                android:text="Password"
+                android:textStyle="bold" />
+
+        <EditText
+                android:id="@+id/passwordET"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Enter Password"
+                android:minWidth="250dp"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:textSize="16sp"
+                android:password="true"/>
     </LinearLayout>
 
-    <ListView
-            android:id="@+id/listMessages"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:scrollbars="horizontal" />
 
     <LinearLayout
             android:id="@+id/linearLayout2"
@@ -49,25 +61,15 @@
             android:gravity="bottom"
             android:orientation="horizontal" >
 
-        <EditText
-                android:id="@+id/chatBoxET"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Text message"
-                android:gravity="top"
-                android:scrollHorizontally="true" >
-        </EditText>
-
         <Button
-                android:id="@+id/sendButton"
+                android:id="@+id/loginButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
-                android:text="@string/label_send"
+                android:text="Login"
                 android:textStyle="bold"
-                android:onClick="onSend"/>
+                android:onClick="onLogin"/>
     </LinearLayout>
 </LinearLayout>
