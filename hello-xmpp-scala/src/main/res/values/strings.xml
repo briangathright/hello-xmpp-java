@@ -1,9 +1,0 @@
-<resources>
-
-    <string name="app_name">hello-xmpp-scala</string>
-    <string name="menu_settings">Settings</string>
-    <string name="title_activity_click_counter">Hello XMPP Client</string>
-
-    <string name="label_send">Send</string>
-
-</resources>
